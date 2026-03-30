@@ -14,18 +14,18 @@ Hệ thống được thiết kế theo cấu trúc lãnh đạo dọc (Vertical
 ### A. Manager-Decomposer Agent (Tác tử Điều phối & Phân rã)
 - **Model:** Phi-3-mini (3.8B) hoặc Llama-3-3B.
 - **Nhiệm vụ:**
-    - Lên kế hoạch xử lý thực thể mới.
-    - Phân tách dữ liệu thô (Unstructured) thành các cặp `Attribute: Value` chuẩn.
-    - Thực hiện **Semantic Schema Alignment**: Tự động ánh xạ các tên trường khác nhau (ví dụ: "Color" và "Màu sắc") về một lược đồ chung.
-- **Output:** JSON chuẩn hóa của thực thể.
+    - **Planning:** Lập kế hoạch xử lý dựa trên loại sản phẩm (ví dụ: Electronics cần Specs Tool, Fashion cần Style Tool).
+    - **Data Decomposition:** Phân tách dữ liệu thô thành các cặp `Attribute: Value` chuẩn.
+    - **Semantic Schema Alignment:** Tự động ánh xạ các tên trường không đồng nhất về lược đồ mục tiêu.
+- **Output:** Kế hoạch thực thi (Plan) và dữ liệu JSON chuẩn hóa.
 
 ### B. Retriever-Matcher Agent (Tác tử Truy vấn & So khớp)
 - **Model:** Llama-3-8B (hoặc model 7B-8B tương đương).
 - **Nhiệm vụ:**
-    - **Retrieval:** Sử dụng Vector Search (ChromaDB) để tìm danh sách ứng viên tiềm năng (Candidate Set).
-    - **Reasoning Match:** Thực hiện so khớp logic 1:1 giữa thực thể đầu vào và các ứng viên.
-    - **Logic:** Sử dụng trọng số thuộc tính (Attribute Weighting) để ưu tiên các thông số kỹ thuật (Model, SKU, Specs).
-- **Output:** Danh sách các cặp Match tiềm năng kèm `Confidence Score` (0-1) và lý giải (Reasoning).
+    - **Hybrid Retrieval:** Kết hợp SQL (lọc Brand/Category) và Vector Search (lọc ngữ nghĩa).
+    - **Tool-Augmented Match:** Sử dụng các công cụ bổ trợ (như unit converter, specs extractor) để làm rõ dữ liệu trước khi so khớp.
+    - **Reasoning Match:** So khớp logic 1:1 và đưa ra giải thích (Reasoning).
+- **Output:** Danh sách các cặp Matching kèm `Confidence Score` và bộ nhớ tạm (Buffer Memory) cho Verifier.
 
 ### C. Verifier-Critic Agent (Tác tử Kiểm chứng)
 - **Model:** Llama-3-8B hoặc Mistral-7B.
@@ -59,6 +59,10 @@ Hệ thống được thiết kế theo cấu trúc lãnh đạo dọc (Vertical
 - **Match Tuyệt đối:** CS > 0.9 (Dựa trên SKU/Model Name chính xác).
 - **Vùng Nghi ngờ:** 0.5 < CS < 0.9 (Cần Verifier can thiệp).
 - **Non-match:** CS < 0.5.
+
+### Agentic Memory (Bộ nhớ Tác tử)
+- **Short-term Memory:** Lưu trữ các bước suy luận trung gian của Retriever để Verifier kiểm tra.
+- **Long-term Matching Memory:** Lưu trữ các cặp thực thể đã được xác nhận khớp (Match) vào một Vector Store riêng. Khi gặp sản phẩm tương tự, hệ thống ưu tiên tham khảo bộ nhớ này trước khi chạy toàn bộ quy trình so khớp mới.
 
 ---
 
