@@ -83,3 +83,10 @@ Hệ thống được thiết kế theo cấu trúc lãnh đạo dọc (Vertical
 
 ## 6. Kết luận & Đóng góp học thuật
 Luận văn sẽ đóng góp một giải pháp Multi-Agent hiệu quả, thực tế, cho phép các doanh nghiệp vừa và nhỏ triển khai hệ thống Entity Matching chất lượng cao trên hạ tầng tại chỗ (On-premise) mà không phụ thuộc vào các API LLM đắt đỏ.
+
+---
+
+## 7. Tài liệu tham khảo (References)
+- Qiang, Z., Wang, W., & Taylor, K. (2023). *Agent-OM: Leveraging LLM Agents for Ontology Matching*. arXiv preprint arXiv:2312.00326. [🔗 arXiv](https://arxiv.org/abs/2312.00326) | [📄 Bản sao lưu PDF](../../../2312.00326v27.pdf)
+- Masterman, T., Besen, S., Sawtell, M., & Chao, A. (2024). *The Landscape of Emerging AI Agent Architectures for Reasoning, Planning, and Tool Calling: A Survey*. arXiv preprint arXiv:2404.11584. [🔗 arXiv](https://arxiv.org/abs/2404.11584) | [📄 Bản sao lưu PDF](../../../2404.11584v1.pdf)
+
